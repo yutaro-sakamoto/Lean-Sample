@@ -73,3 +73,45 @@ universe u
 constant aa : Type*
 #check aa
 end Section2_2
+
+namespace Section2_3
+
+#check fun x : nat, x + 5
+#check λ x : nat, x + 5
+
+constants α β γ : Type
+constants a1 a2 : α
+constants b1 b2 : β
+
+constant f : α → α
+constant g : α → β
+constant h : α → β → α
+constant p : α → α → β
+
+#check fun x : α, f x
+#check λ x : α, f x
+#check λ x : α, f (f x)
+#check λ (x : α) (y : β), h (f x) y
+
+#check λ b : β, λ x : α, x
+#check λ (b : β) (x : α), x
+#check λ (g : β → γ) (f : α → β) (x : α), g (f x)
+
+#check λ (α β : Type*) (b : β) (x : α), x
+#check λ (α β γ : Type*) (g : β → γ) (f : α → β) (x : α), g (f x)
+
+namespace Reduce_Section
+  constants α β γ : Type
+  constant f : α → β
+  constant g : β → γ
+  constant h : α → α
+  constants (a : α) (b : β)
+  
+  #check (λ x : α, x) a
+  #reduce (λ x : α, x) a
+  
+  #check (λ x : α, g (f x)) a
+  #reduce (λ x : α, g (f x)) a
+end Reduce_Section
+#eval 12345 * 54321
+end Section2_3
