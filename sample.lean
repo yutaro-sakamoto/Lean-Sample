@@ -31,3 +31,45 @@ constant F: (nat → nat) → nat
 #check (m, n).1
 #check (p.1, n)
 #check F f
+
+namespace Section2_2
+#check nat
+#check bool
+#check nat → bool
+#check nat × bool
+#check nat × nat → nat
+
+constants α β : Type
+constant F: Type → Type
+constant G: Type → Type → Type
+#check α
+#check F α
+#check F nat
+#check G α
+#check G α β
+#check G α nat
+
+#check prod α β
+#check prod nat nat
+
+#check list α
+#check list nat
+
+#check Type
+#check Type 0
+#check Type 1
+#check Type 2
+#check Type 3
+#check Type 4
+
+#check Prop
+
+#check list
+#check prod
+
+universe u
+-- constant aa : Type u
+-- constant aa : Type _
+constant aa : Type*
+#check aa
+end Section2_2
