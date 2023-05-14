@@ -115,3 +115,31 @@ namespace Reduce_Section
 end Reduce_Section
 #eval 12345 * 54321
 end Section2_3
+
+namespace Section2_4
+def foo: (ℕ → ℕ) → ℕ := λ f, f 0
+
+#check foo
+#print foo
+
+def foo' := λ f : ℕ → ℕ, f 0
+
+def double (x: ℕ) : ℕ := x + x
+#print double
+#check double 3
+#reduce double 3
+
+def square (x : ℕ) := x * x
+#print square
+#check square 3
+#reduce square 3
+
+def do_twice (f : ℕ → ℕ) (x : ℕ) : ℕ := f (f x)
+
+#reduce do_twice double 2
+
+def compose (α β γ : Type*) (g : β → γ) (f : α → β) (x : α) : γ := g (f x)
+
+def curry (α β γ : Type*) (f : α × β → γ) : α → β → γ := sorry
+def uncurry (α β γ : Type*) (f : α → β → γ) : α × β → γ := sorry
+end Section2_4
