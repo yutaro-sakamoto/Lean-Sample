@@ -143,3 +143,18 @@ def compose (α β γ : Type*) (g : β → γ) (f : α → β) (x : α) : γ := 
 def curry (α β γ : Type*) (f : α × β → γ) : α → β → γ := sorry
 def uncurry (α β γ : Type*) (f : α → β → γ) : α × β → γ := sorry
 end Section2_4
+
+namespace Section2_5
+  #check let y := 2 + 2 in y * y
+  #reduce let y := 2 + 2 in y * y
+
+  def t (x: ℕ) : ℕ :=
+  let y := x + x in y * y
+
+  #reduce t 2
+
+  #check let y := 2 + 2, z := y + y in z * z
+  #reduce let y := 2 + 2, z := y + y in z * z
+
+  def foo := let a := ℕ in λ x : a, x + 2
+end Section2_5
