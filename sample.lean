@@ -158,3 +158,45 @@ namespace Section2_5
 
   def foo := let a := ℕ in λ x : a, x + 2
 end Section2_5
+
+namespace Section2_6
+  def compose (α β γ: Type*) (g :β → γ) (f: α → β) (x: α) : γ := g (f x)
+  def do_twice(α : Type*) (h: α → α) (x: α): α := h (h x)
+  def do_thrice(α: Type*) (h: α → α) (x: α) :α := h(h(h(x)))
+
+  namespace Sub1
+    variables (α β γ: Type*)
+    def compose (g :β → γ) (f: α → β) (x: α) : γ := g (f x)
+    def do_twice (h: α → α) (x: α): α := h (h x)
+    def do_thrice (h: α → α) (x: α) :α := h(h(h(x)))
+  end Sub1
+
+  namespace Sub2
+    variables (α β γ: Type*)
+    variables (g: β → γ) (f: α → β) (h: α → α)
+    variable x : α
+
+    def compose := g (f x)
+    def do_twice := h (h x)
+    def do_thrice := h(h(h(x)))
+
+    #print compose
+    #print do_twice
+    #print do_thrice
+  end Sub2
+
+end Section2_6
+
+section Section2_6_useful
+  variables (α β γ: Type*)
+  variables (g: β → γ) (f: α → β) (h: α → α)
+  variable x : α
+
+  def compose := g (f x)
+  def do_twice := h (h x)
+  def do_thrice := h(h(h(x)))
+
+  #print compose
+  #print do_twice
+  #print do_thrice   
+end Section2_6_useful
