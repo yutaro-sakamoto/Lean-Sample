@@ -200,3 +200,48 @@ section Section2_6_useful
   #print do_twice
   #print do_thrice   
 end Section2_6_useful
+
+namespace hidden
+  universe u
+  constant list : Type u → Type u
+
+  constant cons : Π α : Type u, α → list α → list α
+  constant nil : Π α : Type u, list α
+  constant head : Π α : Type u, list α
+  constant tail   : Π α : Type u, list α → list α
+  constant append : Π α : Type u, list α → list α → list α
+end hidden
+
+namespace Section2_8
+  open list
+  #check list
+  #check @cons
+  #check @nil
+  #check @head
+  #check @tail
+  #check @append
+end Section2_8
+
+namespace Section2_8_1
+  universe u
+  constant vec : Type u → ℕ → Type u
+  namespace vec
+    constant empty : Π α : Type u, vec α 0
+    constant cons :
+      Π (α : Type u) (n: ℕ), α → vec α n → vec α (n + 1)
+    constant append :
+      Π (α : Type u) (n m : ℕ), vec α m → vec α n → vec α (n + m)
+  end vec
+
+  variable α : Type
+  variable β : α → Type
+  variable a : α
+  variable b : β a
+
+  #check sigma.mk a b
+  #check (sigma.mk a b).1
+  #check (sigma.mk a b).2
+
+  #reduce (sigma.mk a b).1
+  #reduce (sigma.mk a b).2
+end Section2_8_1
