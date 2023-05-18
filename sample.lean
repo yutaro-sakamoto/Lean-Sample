@@ -245,3 +245,89 @@ namespace Section2_8_1
   #reduce (sigma.mk a b).1
   #reduce (sigma.mk a b).2
 end Section2_8_1
+
+namespace Section2_9
+  namespace hidden
+    universe u
+    constant list : Type u → Type u
+    
+    namespace list
+    constant cons   : Π α : Type u, α → list α → list α
+    constant nil    : Π α : Type u, list α
+    constant append : Π α : Type u, list α → list α → list α
+    end list
+  end hidden
+
+  namespace sub1
+    open hidden.list
+    variable α : Type
+    variable a : α
+    variables l1 l2 : hidden.list α
+
+    #check cons α a (nil α)
+    #check append α (cons α a (nil α)) l1
+    #check append α (append α (cons α a (nil α)) l1) l2
+
+    #check cons _ a (nil _)
+    #check append _ (cons _ a (nil _)) l1
+    #check append _ (append _ (cons _ a (nil _)) l1) l2
+  end sub1
+
+  namespace sub2
+    universe u
+    constant cons   : Π {α : Type u}, α → list α → list α
+    constant nil    : Π {α : Type u}, list α
+    constant append : Π {α : Type u}, list α → list α → list α
+
+    variable  α : Type
+    variable  a : α
+    variables l1 l2 : list α
+
+    #check cons a nil
+    #check append (cons a nil) l1
+    #check append (append (cons a nil) l1) l2
+  end sub2
+
+  namespace sub3
+    universe u
+    def ident {α : Type u} (x : α) := x
+
+    variables α β : Type u
+    variables (a : α) (b : β)
+
+    #check ident
+    #check ident a
+    #check ident b
+  end sub3
+
+  namespace sub4
+    universe u
+    section
+      variable {α : Type u}
+      variable x : α
+      def ident := x
+    end
+
+    variables α β : Type u
+    variables (a : α) (b : β)
+
+    #check ident
+    #check ident a
+    #check ident b
+
+    #check list.nil
+    #check id
+    #check (list.nil : list ℕ)
+    #check (id : ℕ → ℕ)
+
+    #check 2
+    #check (2 : ℕ)
+    #check (2 : ℤ)
+
+    #check @id
+    #check @id α
+    #check @id β
+    #check @id α a
+    #check @id β b
+  end sub4
+end Section2_9
