@@ -356,3 +356,57 @@ namespace Section3_1
   constant implies_intro :
     Π p q : Prop, (Proof p → Proof q) → Proof (implies p q)
 end Section3_1
+
+namespace Section3_2
+  constants p q : Prop
+
+  theorem t1 : p → q → p := λ hp : p, λ hq : q, hp
+
+  #print t1
+
+  theorem t11 : p → q → p :=
+  assume hp : p,
+  assume hq : q,
+  hp
+
+  theorem t12 : p → q → p :=
+    assume hp : p,
+    assume hq : q,
+    show p, from hp
+
+  lemma t13 : p → q → p :=
+    assume hp : p,
+    assume hq : q,
+    show p, from hp
+  
+  theorem t14 (hp : p) (hq : q) : p:= hp
+
+  axiom hp : p
+  theorem t2 : q → p := t1 hp
+
+  theorem t15 (p q : Prop) (hp : p) (hq : q) : p := hp
+  #check t15
+
+  theorem t16 : ∀ (p q : Prop), p → q → p :=
+    λ (p q : Prop) (hp : p) (hq : q), hp
+
+  variables p q : Prop
+  theorem t17 : p → q → p := λ (hp : p) (hq : q), hp
+
+  variable hp : p
+  theorem t18 : q → p := λ (hq : q), hp
+
+  theorem t19 (p q : Prop) (hp : p) (hq : q) : p := hp
+  variables r s : Prop
+
+  #check t19 p q
+  #check t19 r s
+  #check t19 (r → s) (s → r)
+
+  variable h : r → s
+  #check t19 (r → s) (s → r) h
+
+  theorem t21 (h₁ : q → r) (h₂ : p → q) : p → r :=
+    assume h₃ : p,
+    show r, from h₁ (h₂ h₃)
+end Section3_2
