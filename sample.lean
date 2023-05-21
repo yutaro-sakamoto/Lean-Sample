@@ -410,3 +410,79 @@ namespace Section3_2
     assume h₃ : p,
     show r, from h₁ (h₂ h₃)
 end Section3_2
+
+namespace Section3_3
+  variables p q : Prop
+  #check p → q → p ∧ q
+  #check ¬p → p ↔ false
+  #check p ∨ q → q ∨ p
+
+  example (hp : p) (hq : q) : p ∧ q := and.intro hp hq
+  #check assume (hp : p) (hq :q), and.intro hp hq
+
+  example (h : p ∧ q) : p := and.elim_left h
+  example (h: p ∧ q) : q := and.elim_right h
+
+  example (h : p ∧ q) : q ∧ p :=
+    and.intro (and.right h) (and.left h)
+  
+  variables (hp : p) (hq :q)
+  #check (⟨hp, hq⟩ : p ∧ q)
+
+  variable l : list ℕ
+  #check list.head l
+  #check l.head
+
+  example (h : p ∧ q) : q ∧ p :=
+    ⟨h.right, h.left⟩
+  
+  example (h : p ∧ q) : q ∧ p ∧ q :=
+    ⟨h.right, ⟨h.left, h.right⟩⟩
+  
+  example (h: p ∧ q) : q ∧ p ∧ q :=
+    ⟨h.right, h.left, h.right⟩
+  
+  example (hp : p) : p ∨ q := or.intro_left q hp
+  example (hq : q) : p ∨ q := or.intro_right p hq
+
+  example (h: p ∨ q) : q ∨ p :=
+    or.elim h
+      (assume hp : p,
+        show q ∨ p, from or.intro_right q hp)
+      (assume hq : q,
+        show q ∨ p, from or.intro_left p hq)
+  
+  example (h : p ∨ q) : q ∨ p :=
+    or.elim h (λ hp, or.inr hp) (λ hq, or.inl hq)
+  
+  example (h : p ∨ q) : q ∨ p :=
+    h.elim
+      (assume hp : p, or.inr hp)
+      (assume hq : q, or.inl hq)
+  
+  example (hpq : p → q) (hnq : ¬q) : ¬p :=
+    assume hp : p,
+    show false, from hnq (hpq hp)
+  
+  example (hp : p) (hnp : ¬p) : q := false.elim (hnp hp)
+
+  variables r : Prop
+  example (hp : p) (hnq : ¬p) : q := absurd hp hnq
+  example (hnp : ¬p) (hq : q) (hqp : q → p) : r :=
+    absurd (hqp hq) hnp
+  
+  theorem and_swap : p ∧ q ↔ q ∧ p :=
+  iff.intro
+    (assume h : p ∧ q,
+      show q ∧ p, from and.intro (and.right h) (and.left h))
+    (assume h : q ∧ p,
+      show p ∧ q, from and.intro (and.right h) (and.left h))
+  
+  variable h : p ∧ q
+  example : q ∧ p := iff.mp (and_swap p q) h
+
+  theorem and_swap1 : p ∧ q ↔ q ∧ p :=
+    ⟨ λ h, ⟨h.right, h.left⟩, λ h, ⟨h.right, h.left⟩⟩
+  
+  example (h : p ∧ q) : q ∧ p := (and_swap1 p q).mp h
+end Section3_3
