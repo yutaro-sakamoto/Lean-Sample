@@ -532,3 +532,21 @@ namespace Section3_5
       (assume hnp : ¬p,
         or.inl hnp)
 end Section3_5
+
+namespace Section3_7
+  open classical
+  variables p q : Prop
+
+  -- Use Classical Logic
+  example : ¬(p ↔ ¬p) :=
+  assume hiff : p ↔ ¬p,
+  by_cases
+    (assume hp : p,
+      have p2np : p → ¬p, from iff.elim_left hiff,
+      (p2np hp) hp)
+    (assume hnp : ¬p,
+      have np2p : ¬p → p, from iff.elim_right hiff,
+      have hp : p, from np2p hnp,
+      have p2np : p → ¬p, from iff.elim_left hiff,
+      (p2np hp) hp)
+end Section3_7
