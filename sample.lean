@@ -500,3 +500,35 @@ namespace Section3_4
    suffices hq : q, from ⟨hq, hp⟩,
    show q, from h.right
 end Section3_4
+
+namespace Section3_5
+  open classical
+
+  variables p q : Prop
+  #check em p
+
+  theorem dne {p: Prop} (h: ¬¬p) : p :=
+  or.elim (em p)
+    (assume hp : p, hp)
+    (assume hnp : ¬p, absurd hnp h)
+  
+  example (h : ¬¬p) : p :=
+    by_cases
+      (assume h1 : p, h1)
+      (assume h1 : ¬p, absurd h1 h)
+  
+  example (h : ¬¬p) : p :=
+    by_contradiction
+      (assume h1 : ¬p,
+        show false, from h h1)
+  
+  example (h : ¬(p ∧ q)) : ¬p ∨ ¬q :=
+    or.elim (em p)
+      (assume hp : p,
+        or.inr
+          (show ¬q, from
+            assume hq : q,
+            h ⟨hp, hq⟩))
+      (assume hnp : ¬p,
+        or.inl hnp)
+end Section3_5
