@@ -550,3 +550,33 @@ namespace Section3_7
       have p2np : p → ¬p, from iff.elim_left hiff,
       (p2np hp) hp)
 end Section3_7
+
+namespace Section4_1
+  variables (α : Type*) (p q : α → Prop)
+
+  example : (∀ x : α, p x ∧ q x) → ∀ y : α, p y :=
+    assume h : ∀ x : α, p x ∧ q x,
+    assume y : α,
+    show p y, from (h y).left
+  
+  example : (∀ x : α, p x ∧ q x) → ∀ x : α, p x :=
+    assume h : ∀ x : α , p x ∧ q x,
+    assume z : α,
+    show p z, from and.elim_left (h z)
+  
+  variable r : α → α → Prop
+  variable trans_r : ∀ {x y z}, r x y → r y z → r x z
+
+  variables a b c : α
+  variables (hab : r a b) (hbc : r b c)
+
+  variable refl_r : ∀ x, r x x
+  variable symm_r : ∀ {x y}, r x y → r y x
+
+  #check trans_r
+  #check trans_r hab
+  #check trans_r hab hbc
+
+  example (a b c d : α) (hab : r a b) (hcb : r c b) (hcd : r c d) : r a d :=
+  trans_r (trans_r hab (symm_r hcb)) hcd
+end Section4_1
