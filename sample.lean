@@ -580,3 +580,54 @@ namespace Section4_1
   example (a b c d : α) (hab : r a b) (hcb : r c b) (hcd : r c d) : r a d :=
   trans_r (trans_r hab (symm_r hcb)) hcd
 end Section4_1
+
+
+namespace Section4_2
+  #check eq.refl
+  #check eq.symm
+  #check eq.trans
+
+  universe u
+
+  #check @eq.refl.{u}
+  #check @eq.symm.{u}
+  #check @eq.trans.{u}
+
+  variables (α β : Type*) (a b c d : α)
+  variables (hab : a = b) (hcb : c = b) (hcd : c = d)
+
+  example : a = d :=
+  eq.trans (eq.trans hab (eq.symm hcb)) hcd
+
+  example : a = d := (hab.trans hcb.symm).trans hcd
+
+  example (f : α → β) (a : α) : (λ x, f x) a = f a := eq.refl _
+  example (a : α) (b : α) : (a, b).1 = a := eq.refl _
+  example : 2 + 3 = 5 := eq.refl _
+
+  example (f : α → β) (a : α) : (λ x, f x) a = f a := rfl
+  example (a : α) (b : α) : (a, b).1 = a := rfl
+  example : 2 + 3 = 5 := rfl
+
+  example (α : Type*) (a b : α) (p : α → Prop)
+    (h1 : a = b) (h2 : p a) : p b :=
+    eq.subst h1 h2
+  
+  example (α : Type*) (a b :α) (p : α → Prop)
+    (h1 : a = b) (h2 : p a) : p b :=
+    h1 ▸ h2 
+end Section4_2
+
+namespace Section4_2_1
+  variable α : Type
+  variables a b : α
+  variables f g : α → ℕ
+  variable h₁ : a = b
+  variable h₂ : f = g
+
+  example : f a = f b := congr_arg f h₁
+  example : f a = g a := congr_fun h₂ a
+  example : f a = g b := congr h₂ h₁
+
+  variables x y z : ℤ
+end Section4_2_1
