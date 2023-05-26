@@ -222,3 +222,48 @@ namespace Section4_5
   have f 0 ≤ f 2, from le_trans (h 0) (h 1),
   show f 0 = f 2, from le_antisymm ‹f 0 ≤ f 2› ‹f 0 ≥ f 2›
 end Section4_5
+
+namespace Section5_1
+  theorem test (p q : Prop) (hp : p) (hq : q) : p ∧ q ∧ p :=
+  begin
+    apply and.intro,
+    exact hp,
+    apply and.intro,
+    exact hq,
+    exact hp
+  end
+
+  theorem test2 (p q : Prop) (hp : p) (hq : q) : p ∧ q ∧ p :=
+  begin
+    apply and.intro hp,
+    exact and.intro hq hp
+  end
+
+  theorem test3 (p q : Prop) (hp : p) (hq : q) : p ∧ q ∧ p :=
+  begin
+    apply and.intro hp; exact and.intro hq hp
+  end
+  #print test3
+
+  theorem test4 (p q : Prop) (hp : p) (hq : q) : p ∧ q ∧ p :=
+  by exact and.intro hp (and.intro hq hp)
+
+  namespace sub
+    variables {p q : Prop} (hp : p) (hq : q)
+    include hp hq
+    example : p ∧ q ∧ p :=
+    begin
+      apply and.intro hp,
+      exact and.intro hq hp
+    end
+  end sub
+
+  variables {p q : Prop} (hp : p) (hq : q)
+
+  example : p ∧ q ∧ p :=
+  let hp := hp, hq := hq in
+  begin
+    apply and.intro hp,
+    exact and.intro hq hp
+  end
+end Section5_1
