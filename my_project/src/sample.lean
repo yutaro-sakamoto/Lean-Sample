@@ -827,3 +827,54 @@ namespace Section5_5
     p ∧ ((p ∧ q) ∧ r) ∧ (q ∧ r ∧ p) :=
   by repeat { any_goals { split <|> assumption }}
 end Section5_5
+
+namespace Section5_6
+  variables (f : ℕ → ℕ) (k : ℕ)
+
+  example (h₁ : f 0 = 0) (h₂ : k = 0) : f k = 0 :=
+  begin
+    rw h₂,
+    rw h₁
+  end
+
+  example (x y : ℕ) (p : ℕ → Prop) (q : Prop) (h : q → x = y)
+    (h' : p y) (hq : q) : p x :=
+  by { rw (h hq), assumption }
+
+  example (h₁ : f 0 = 0) (h₂ : k = 0) : f k = 0 :=
+  by rw [h₂, h₁]
+
+  variables (a b : ℕ)
+  example (h₁ : a = b) (h₂ : f a = 0) : f b = 0 :=
+  begin
+    rw [←h₁, h₂]
+  end
+
+  example (a b c: ℕ) : a + b + c = a + c + b :=
+  begin
+    rw [add_assoc, add_comm b, ←add_assoc]
+  end
+
+  example (a b c: ℕ) : a + b + c = a + c + b :=
+  begin
+    rw [add_assoc, add_assoc, add_comm b]
+  end
+
+  example (a b c: ℕ) : a + b + c = a + c + b :=
+  begin
+    rw [add_assoc, add_assoc, add_comm _ b]
+  end
+
+  example (h : a + 0 = 0) : f a = f 0 :=
+  by { rw add_zero at h, rw h}
+
+  def tuple (α : Type*) (n : ℕ) :=
+    { l : list α // l.length = n}
+  
+  variables {α : Type*} {n : ℕ}
+  example (h : n = 0) (t : tuple α n) : tuple α 0 :=
+  begin
+    rw h at t,
+    exact t
+  end
+end Section5_6
