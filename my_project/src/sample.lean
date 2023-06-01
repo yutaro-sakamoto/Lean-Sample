@@ -1,5 +1,6 @@
 import data.int.basic
 import data.nat.basic
+import data.list.basic
 
 namespace Section4_2
   variables x y z : ℤ
@@ -878,3 +879,92 @@ namespace Section5_6
     exact t
   end
 end Section5_6
+
+namespace Section5_7
+  variables (x y z : ℕ) (p : ℕ → Prop)
+  variable (h : p (x * y))
+
+  example : (x + 0) * (0 + y * 1 + z * 0) = x * y :=
+  by simp
+
+  include h
+  example : p ((x + 0) * (0 + y * 1 + z * 0)) :=
+  by { simp, assumption }
+
+  variable {α : Type*}
+  open list
+
+  example (xs : list ℕ) :
+    reverse (xs ++ [1, 2, 3]) = [3, 2, 1] ++ reverse xs :=
+  by simp
+
+  example (xs ys : list α) :
+    length (reverse (xs ++ ys)) = length xs + length ys :=
+  by simp [add_comm]
+
+  example (h : p ((x + 0) * (0 + y * 1 + z * 0))) :
+    p (x * y) :=
+  by { simp at h, assumption }
+
+  variables {w : ℕ} [comm_ring α]
+  local attribute [simp] mul_comm mul_assoc mul_left_comm
+  local attribute [simp] add_assoc add_comm add_left_comm
+
+  example (h : p (x * y + z * w * x)) : (x - x) * y + z = z :=
+  begin simp end
+
+end Section5_7
+
+namespace Section5_7_1
+
+  def f (m n : ℕ) : ℕ := m + n + m
+
+  example {m n : ℕ} (h : n = 1) (h' : 0 = m) : (f m n) = n :=
+  by simp [h, h'.symm, f]
+
+  variables (f : ℕ → ℕ) (k : ℕ)
+  example (h₁ : f 0 = 0) (h₂ : k = 0) : f k = 0 :=
+  by simp [h₁, h₂]
+
+  example (h₁ : f 0 = 0) (h₂ : k = 0) : f k = 0 :=
+  by simp *
+
+  example (u w x y z : ℕ) (h₁ : x = y + z) (h₂ : w = u + x) :
+    w = z + y + u :=
+  by simp [*, add_assoc, add_comm, add_left_comm]
+
+  variables (p q r : Prop)
+
+  example (hp : p) : p ∧ q ↔ q :=
+  by simp *
+
+  example (hp : p) : p ∨ q :=
+  by simp *
+
+  example (hp : p) (hq : q) : p ∧ (q ∨ r) :=
+  by simp *
+end Section5_7_1
+
+namespace Section5_7_2
+  variables (u w x x' y y' z : ℕ) (p : ℕ → Prop)
+  example (h₁ : x + 0 = x') (h₂ : y + 0 = y') :
+    x + y + 0 = x' + y' :=
+  by { simp at *, simp * }
+
+
+end Section5_7_2
+
+namespace Section5_7_3
+  open list
+  variables {α : Type*} (x y z : α) (xs ys zs : list α)
+
+  def mk_symm (xs : list α) := xs ++ reverse xs
+
+  theorem reverse_mk_symm (xs : list α) :
+    reverse (mk_symm xs) = mk_symm xs :=
+  by { unfold mk_symm, simp }
+
+  theorem reverse_mk_symm (xs : list α) :
+    reverse (mk_symm xs) = mk_symm xs :=
+  by simp [mk_symm]
+end Section5_7_3
