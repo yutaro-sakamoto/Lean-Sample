@@ -114,3 +114,35 @@ namespace Section6_3
     (hiding succ sub)
   export nat (succ add sub)
 end Section6_3
+
+namespace Section6_4
+  variable {α : Type*}
+  def is_prefix (l₁ : list α) (l₂ : list α) : Prop :=
+  ∃ t, l₁ ++ t = l₂
+  infix ` <<+: `:50 := is_prefix
+
+  local attribute [simp]
+  theorem list.is_prefix_refl (l : list α) : l <<+: l :=
+  ⟨[], by simp⟩
+
+  example : [1, 2, 3] <<+: [1, 2, 3] := by simp
+
+  instance list_has_le : has_le (list α) := ⟨is_prefix⟩
+
+
+  theorem list.is_prefix_refl2 (l : list α) : l ≤ l :=
+  ⟨[], by simp⟩
+
+  namespace sub
+    def list_has_le : has_le (list α) := ⟨is_prefix⟩
+    local attribute [instance] list_has_le
+
+    theorem foo (l : list α) : l ≤ l := ⟨[], by simp⟩
+  end sub
+
+  @[simp, refl]
+  theorem list.is_prefix_refl3 (l : list α) : l <<+: l :=
+  ⟨[], by simp⟩
+
+  example : [1, 2, 3] <<+: [1, 2, 3] := by reflexivity
+end Section6_4
