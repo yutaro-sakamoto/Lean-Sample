@@ -1,4 +1,5 @@
 import data.nat.basic
+import algebra.group.basic
 
 section
 variables x y : ℕ
@@ -87,3 +88,29 @@ end
 #check t2
 end section6_2_1
 
+namespace Section6_3
+  namespace foo
+  def bar : ℕ := 1
+  end foo
+  open foo
+  #check foo.bar
+
+  def foo1.bar : ℕ := 1
+  open foo
+
+  #check foo1.bar
+
+  #check add_sub_cancel
+  #check nat.add_sub_cancel
+  #check _root_.add_sub_cancel
+
+  namespace foo2
+  protected def bar : ℕ := 1
+  end foo2
+  open foo2
+  #check foo2.bar
+
+  open nat (renaming mul → times) (renaming add → plus)
+    (hiding succ sub)
+  export nat (succ add sub)
+end Section6_3
