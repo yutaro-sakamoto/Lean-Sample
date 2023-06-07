@@ -1,5 +1,6 @@
 import data.nat.basic
 import algebra.group.basic
+import data.int.basic
 
 section
 variables x y : ℕ
@@ -202,3 +203,52 @@ namespace Section6_5
     th2 (th1 reflr euclr) euclr
   end hidden2
 end Section6_5
+
+namespace Section6_6
+  local notation [parsing_only]`[` a  `**` b `]` := a * b + 1
+  def mul_square (a b : ℕ) := a * a * b * b
+
+  local infix (name := mul_square) `<*>`:50 := mul_square
+  #reduce [2 ** 3]
+  #reduce 2 <*> 3
+  local infix `<<*>>`:50 := λ a b : ℕ, a * a * b * b
+
+  namespace int
+    def dvd (m n : ℤ) : Prop := ∃ k, n = m * k
+    instance : has_dvd int := ⟨int.dvd⟩
+
+    @[simp]
+    theorem dvd_zero (n : ℤ) : n ∣ 0 :=
+    ⟨0, by simp⟩
+
+    theorem dvd_intro {m n : ℤ} (k : ℤ) (h : n = m * k) : m ∣ n :=
+    ⟨k, h⟩
+  end int
+
+  open int
+  section mod_m
+    parameter (m : ℤ)
+    variables (a b c : ℤ)
+
+    definition mod_equiv := (m ∣ b - a)
+
+    local infix ` ≡ `:50 := mod_equiv
+    theorem mod_refl : a ≡ a :=
+    show m ∣ a - a, by simp
+
+    theorem mod_symm (h : a ≡ b) : b ≡ a :=
+    by cases h with c hc; apply dvd_intro (-c); simp [eq.symm hc]
+
+    local attribute [simp] add_assoc add_comm add_left_comm
+
+    theorem mod_trans (h₁ : a ≡ b) (h₂ : b ≡ c) : a ≡ c :=
+    begin
+      cases h₁ with d hd, cases h₂ with e he,
+      apply dvd_intro (d + e),
+      simp [mul_add, eq.symm hd, eq.symm he],
+    end
+  end mod_m
+  #check (mod_refl : ∀ (m a : ℤ), mod_equiv m a a)
+  #check (mod_symm : ∀ (m a b : ℤ), mod_equiv m a b → mod_equiv m b a)
+  #check (mod_trans: ∀ (m a b c : ℤ), mod_equiv m a b → mod_equiv m b c → mod_equiv m a c)
+end Section6_6
