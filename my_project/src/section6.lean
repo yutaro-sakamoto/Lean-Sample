@@ -252,3 +252,16 @@ namespace Section6_6
   #check (mod_symm : ∀ (m a b : ℤ), mod_equiv m a b → mod_equiv m b a)
   #check (mod_trans: ∀ (m a b c : ℤ), mod_equiv m a b → mod_equiv m b c → mod_equiv m a c)
 end Section6_6
+
+namespace Section6_7
+  variables m n : ℕ
+  variables i j : ℤ
+
+  #check i + m
+  #check i + m + j
+  #check i + m + n
+
+  #check ↑m + i
+  #check ↑(m + n) + i
+  #check ↑m + ↑n + i
+end Section6_7
