@@ -1,6 +1,7 @@
 import data.nat.basic
 import algebra.group.basic
 import data.int.basic
+import algebra.ring.basic
 
 section
 variables x y : ℕ
@@ -265,3 +266,42 @@ namespace Section6_7
   #check ↑(m + n) + i
   #check ↑m + ↑n + i
 end Section6_7
+
+namespace Section6_8
+  #check eq
+  #check @eq
+  #check eq.symm
+  #check @eq.symm
+
+  #print eq.symm
+
+  #check and
+  #check and.intro
+  #check @and.intro
+
+  def foo {α : Type*} (x : α) : α := x
+
+  #check foo
+  #check @foo
+  #reduce foo
+  #reduce (foo nat.zero)
+  #print foo
+
+  #print notation
+  #print notation + * -
+  #print axioms
+  #print options
+  #print prefix nat
+  #print prefix nat.le
+  #print classes
+  #print instances ring
+  #print fields ring
+
+  #print list.append
+  #print definition list.append
+  #print +
+  #print nat
+  #print inductive nat
+  #print group
+  #print inductive group
+end Section6_8
