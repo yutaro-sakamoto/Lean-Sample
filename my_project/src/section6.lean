@@ -433,3 +433,58 @@ namespace Section7_1
   def band (b1 b2 : bool) : bool :=
   bool.cases_on b1 ff b2
 end Section7_1
+
+namespace Section7_2
+  universes u v
+
+  inductive myprod (α : Type u) (β : Type v)
+  | mk : α → β → myprod
+
+  inductive mysum (α : Type u) (β : Type v)
+  | inl : α → mysum
+  | inr : β → mysum
+
+  def fst {α : Type u} {β : Type v} (p : α × β) : α :=
+  prod.rec_on p (λ a b, a)
+
+  def snd {α : Type u} {β : Type v} (p : α × β) : β :=
+  prod.rec_on p (λ a b, b)
+
+  def prod_example (p : bool × ℕ) : ℕ :=
+  prod.rec_on p (λ b n, cond b (2 * n) (2 * n + 1))
+
+  #reduce prod_example (tt, 3)
+  #reduce prod_example (ff, 3)
+
+  def sum_example (s : ℕ ⊕ ℕ) : ℕ :=
+  sum.cases_on s (λ n, 2 * n) (λ n, 2 * n + 1)
+
+  #reduce sum_example (sum.inl 3)
+  #reduce sum_example (sum.inr 3)
+
+  inductive myprod2 (α : Type u) (β : Type v)
+  | mk (fst : α) (snd : β) : myprod2
+
+  inductive mysum2 (α : Type u) (β : Type v)
+  | inl {} (a : α) : mysum2
+  | inr {} (b : β) : mysum2
+
+  structure myprod3 (α β : Type*) :=
+  mk :: (fst : α) (snd : β)
+
+  structure color := (red : nat) (green : nat) (blue : nat)
+  def yellow := color.mk 255 255 0
+  #reduce color.red yellow
+
+  structure Semigroup :=
+  (carrier : Type u)
+  (mul : carrier → carrier → carrier)
+  (mul_assoc : ∀ a b c, mul (mul a b) c = mul a (mul b c))
+
+  inductive option (α : Type*)
+  | none {} : option
+  | some    : α → option
+
+  inductive inhabited (α : Type*)
+  | mk : α → inhabited
+end Section7_2
