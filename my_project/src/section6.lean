@@ -488,3 +488,36 @@ namespace Section7_2
   inductive inhabited (α : Type*)
   | mk : α → inhabited
 end Section7_2
+
+namespace Section7_3
+inductive false : Prop
+
+inductive true : Prop
+
+inductive and (a b : Prop) : Prop
+| intro : a → b → and
+
+inductive or (a b : Prop) : Prop
+| intro_left : a → or
+| intro_right : b → or
+
+inductive Exists {α : Type*} (q : α → Prop) : Prop
+| intro : ∀ (a : α), q a → Exists
+
+def exists.intro := @Exists.intro
+
+inductive subtype {α : Type*} (p : α → Prop)
+| mk : Π x : α, p x → subtype
+
+universe u
+
+structure subtype2 {α : Sort u} (p : α → Prop) :=
+(val : α) (property : p val)
+
+section
+variables {α : Type u} (p : α → Prop)
+
+#check subtype2 p
+#check { x : α // p x }
+end
+end Section7_3
