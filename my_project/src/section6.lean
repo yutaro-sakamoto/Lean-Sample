@@ -600,3 +600,57 @@ namespace Section7_4
     (by simp only [zero_add, add_zero])
     (λ n ih, by simp only [add_succ, ih, succ_add])
 end Section7_4
+
+namespace Section7_5
+  inductive list (α : Type*)
+  | nil {} : list
+  | cons : α → list → list
+
+  namespace list
+    variable {α : Type*}
+
+    notation (name := cons) h :: t := cons h t
+
+    def append (s t : list α) : list α :=
+    list.rec t (λ x l u, x :: u) s
+
+    notation (name := append) s ++ t := append s t
+
+    theorem nil_append (t : list α) : nil ++ t = t := rfl
+
+    theorem cos_append (x : α) (s t : list α) :
+    x :: s ++ t = x:: (s ++ t) := rfl
+  end list
+
+  namespace list
+    notation (name := list) `[` l:(foldr `,` (h t, cons h t) nil)`]` := l
+
+    section
+      open nat
+      #check [1, 2, 3, 4, 5]
+      #check ([1, 2, 3, 4, 5] : list int)
+    end
+    variable α : Type*
+    theorem append_nil (t : list α) : t ++ nil = t := sorry
+
+    theorem append_assoc (r s t : list α) :
+    r ++ s ++ t = r ++ (s ++ t) := sorry
+  end list
+
+
+  inductive binary_tree
+  | leaf : binary_tree
+  | node : binary_tree → binary_tree → binary_tree
+
+  inductive cbtree
+  | leaf : cbtree
+  | sup : (ℕ → cbtree) → cbtree
+
+  namespace cbtree
+    def succ (t : cbtree) : cbtree :=
+    sup (λ n, t)
+
+    def omega : cbtree :=
+    sup (λ n, nat.rec_on n leaf (λ n t, succ t))
+  end cbtree
+end Section7_5
