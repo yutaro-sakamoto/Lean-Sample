@@ -521,3 +521,82 @@ variables {α : Type u} (p : α → Prop)
 #check { x : α // p x }
 end
 end Section7_3
+
+namespace Section7_4
+  --inductive nat : Type
+  --| zero : nat
+  --| succ : nat → nat
+
+  #check @nat.rec_on
+
+  --namespace nat
+  --  def add(m n : nat) : nat :=
+  --    nat.rec_on n m (λ n add_m_n, succ add_m_n)
+  --  #reduce add (succ zero) (succ (succ zero))
+  --  instance : has_zero nat := has_zero.mk zero
+  --  instance : has_add nat := has_add.mk add
+
+  --  theorem add_zero (m : nat) : m + 0 = m := rfl
+  --  theorem add_succ (m n : nat) : m + succ n = succ (m + n) := rfl
+
+  --  -- theorem zero_add (n : nat) : 0 + n = n :=
+  --  -- nat.rec_on n
+  --  --   (show 0 + 0 = 0, from rfl)
+  --  --   (assume n,
+  --  --     assume ih : 0 + n = n,
+  --  --     show 0 + succ n = succ n, from
+  --  --       calc
+  --  --         0 + succ n = succ (0 + n) : rfl
+  --  --           ... = succ n : by rw ih)
+  --end nat
+  open nat
+  theorem zero_add (n : ℕ) : 0 + n = n :=
+    nat.rec_on n rfl (λ n ih, by rw [add_succ, ih])
+  theorem zero_add' (n : ℕ) : 0 + n = n :=
+    nat.rec_on n rfl (λ n ih, by simp only [add_succ, ih])
+  
+  theorem add_assoc (m n k : ℕ) : m + n + k = m + (n + k) :=
+  nat.rec_on k
+    (show m + n + 0 = m + (n + 0), from rfl)
+    (assume k, assume ih : m + n + k = m + (n + k),
+    show m + n + succ k = m + (n + succ k), from
+      calc
+        m + n + succ k = succ (m + n + k) : rfl
+        ... = succ (m + (n + k)) : by rw ih
+        ... = m + succ (n + k) : rfl
+        ... = m + (n + succ k) : rfl)
+  
+  theorem add_assoc' (m n k : ℕ) : m + n + k = m + (n + k) :=
+  nat.rec_on k rfl (λ k ih, by simp only [add_succ, ih])
+
+  example (m n : nat) : m + n = n + m :=
+  nat.rec_on n
+    (show m + 0 = 0 + m, by rw [nat.zero_add, nat.add_zero])
+    (assume n, assume ih : m + n = n + m,
+    calc
+      m + succ n = succ (m + n) : rfl
+      ... = succ (n + m) : by rw ih
+      ... = succ n + m : sorry)
+  
+  theorem succ_add (m n : nat) : succ m + n = succ (m + n) :=
+  nat.rec_on n
+  (show succ m + 0 = succ (m + 0), from rfl)
+  (assume n,
+    assume ih : succ m + n = succ (m + n),
+    show succ m + succ n = succ (m + succ n), from
+      calc
+        succ m + succ n = succ (succ m + n) : rfl
+          ... = succ (succ (m + n)) : by rw ih
+          ... = succ (m + succ n) : rfl)
+
+  theorem add_assoc1(m n k : ℕ) : m + n + k = m + (n + k) :=
+  nat.rec_on k rfl (λ k ih, by simp only [add_succ, ih])
+
+  theorem succ_add1 (m n : nat) : succ m + n = succ (m + n) :=
+  nat.rec_on n rfl (λ n ih, by simp only [add_succ, ih])
+
+  theorem add_comm (m n : nat) : m + n = n + m :=
+  nat.rec_on n
+    (by simp only [zero_add, add_zero])
+    (λ n ih, by simp only [add_succ, ih, succ_add])
+end Section7_4
