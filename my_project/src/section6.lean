@@ -665,4 +665,21 @@ namespace Section7_6
     { exact hz },
     apply hs
   end
+
+  example (n : ℕ) (h : n ≠ 0) : succ (pred n) = n :=
+  begin
+    cases n with m,
+    -- first goal: h : 0 ≠ 0 ⊢ succ (pred 0) = 0
+      { apply (absurd rfl h) },
+    -- second goal: h : succ m ≠ 0 ⊢ succ (pred (succ m)) = succ m
+    reflexivity
+  end
+
+  def f (n : ℕ ): ℕ :=
+  begin
+    cases n, exact 3, exact 7
+  end
+
+  example : f 0 = 3 := rfl
+  example : f 5 = 7 := rfl
 end Section7_6
