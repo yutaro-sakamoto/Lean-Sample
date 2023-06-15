@@ -654,3 +654,15 @@ namespace Section7_5
     sup (λ n, nat.rec_on n leaf (λ n t, succ t))
   end cbtree
 end Section7_5
+
+namespace Section7_6
+  variable p : ℕ → Prop
+  open nat
+  example (hz : p 0) (hs : ∀ n, p (succ n)) : ∀ n, p n :=
+  begin
+    intro n,
+    cases n,
+    { exact hz },
+    apply hs
+  end
+end Section7_6
