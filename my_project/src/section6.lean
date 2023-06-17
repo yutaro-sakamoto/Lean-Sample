@@ -725,4 +725,20 @@ namespace Section7_6
         { exact b }
   end
 
+  example (hz : p 0) (hs : ∀ n, p (succ n)) (m k : ℕ) :
+    p (4 * m + 5 * k) :=
+  begin
+    cases (4 * m + 5 * k),
+    { exact hz }, -- goal is p 0
+    apply hs -- goal is a : ℕ ⊢ p (succ a)
+  end
+
+  example (hz : p 0) (hs : ∀ n, p (succ n)) (m k : ℕ) :
+  p (m + 3 * k) :=
+  begin
+    generalize : m + 3 * k = n,
+    cases n,
+    { exact hz },
+    apply hs
+  end
 end Section7_6
