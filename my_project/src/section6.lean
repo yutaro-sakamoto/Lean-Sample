@@ -682,4 +682,47 @@ namespace Section7_6
 
   example : f 0 = 3 := rfl
   example : f 5 = 7 := rfl
+
+  def tuple (α : Type*) (n : ℕ) :=
+  { l : list α // list.length l = n }
+
+  variables {α : Type*} {n : ℕ}
+
+  def ff {n : ℕ} (t : tuple α n) : ℕ :=
+  begin
+    cases n, exact 3, exact 7
+  end
+
+  inductive foo : Type
+  | bar1 : ℕ → ℕ → foo
+  | bar2 : ℕ → ℕ → ℕ → foo
+
+  def silly (x : foo) : ℕ :=
+  begin
+    cases x with a b c d e,
+    exact b,
+    exact e
+  end
+
+  open foo
+
+  def silly2 (x : foo) : ℕ :=
+  begin
+    cases x,
+      case bar1 : a b
+        { exact b },
+      case bar2 : c d e
+        { exact e }
+  end
+
+
+  def silly3 (x : foo) : ℕ :=
+  begin
+    cases x,
+      case bar2 : c d e
+        { exact e },
+      case bar1 : a b
+        { exact b }
+  end
+
 end Section7_6
