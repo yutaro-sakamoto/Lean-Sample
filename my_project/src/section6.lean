@@ -741,4 +741,117 @@ namespace Section7_6
     { exact hz },
     apply hs
   end
+
+  example (p : Prop) (m n : ℕ)
+    (h₁ : m < n → p) (h₂ : m ≥ n → p) : p :=
+  begin
+    cases lt_or_ge m n with hlt hge,
+    { exact h₁ hlt },
+    exact h₂ hge
+  end
+
+  example (p : Prop) (m n : ℕ)
+    (h₁ : m < n → p) (h₂ : m ≥ n → p) : p :=
+  begin
+    have h : m < n ∨ m ≥ n,
+    { exact lt_or_ge m n },
+    cases h with hlt hge,
+    { exact h₁ hlt },
+    exact h₂ hge
+  end
+
+  #check nat.sub_self
+
+  example (m n : ℕ) : m - n = 0 ∨ m ≠ n :=
+  begin
+    cases decidable.em (m = n) with heq hne,
+    { rw heq,
+      left, exact nat.sub_self n },
+    right, exact hne
+  end
+
+  def f1 (m k : ℕ) : ℕ :=
+  begin
+    cases m - k, exact 3, exact 7
+  end
+
+  example : f1 5 7 = 3 := rfl
+  example : f1 10 2 = 7 := rfl
+
+  theorem zero_add (n : ℕ) : 0 + n = n :=
+  begin
+    induction n with n ih,
+      refl,
+    rw [add_succ, ih]
+  end
+
+  theorem zero_add2 (n : ℕ) : 0 + n = n :=
+  begin
+    induction n,
+    case zero : { refl },
+    case succ : n ih { rw [add_succ, ih]}
+  end
+
+  theorem succ_add (m n : ℕ): succ m + n = succ (m + n) :=
+  begin
+    induction n,
+    case zero : { refl },
+    case succ : n ih { rw [add_succ, add_succ, ih]}
+  end
+
+  theorem add_comm (m n : ℕ) : m + n = n + m :=
+  begin
+    induction n,
+    case zero : { rw zero_add, refl },
+    case succ : n ih { rw [add_succ, ih, succ_add]}
+  end
+
+theorem zero_add3 (n : ℕ) : 0 + n = n :=
+by induction n; simp only [*, add_zero, add_succ]
+
+theorem succ_add3 (m n : ℕ) : succ m + n = succ (m + n) :=
+by induction n; simp only [*, add_zero, add_succ]
+
+theorem add_comm3 (m n : ℕ) : m + n = n + m :=
+by induction n;
+     simp only [*, add_zero, add_succ, succ_add, zero_add]
+
+theorem add_assoc3 (m n k : ℕ) : m + n + k = m + (n + k) :=
+by induction k; simp only [*, add_zero, add_succ]
+
+example (m n k : ℕ) (h : succ (succ m) = succ (succ n)) :
+  n + k = m + k :=
+begin
+  injection h with h',
+  injection h' with h'',
+  rw h''
+end
+
+example (m n k : ℕ) (h : succ (succ m) = succ (succ n)) :
+  n + k = m + k :=
+begin
+  injection h with h',
+  injection h' with h'',
+  rw h''
+end
+
+example (m n k : ℕ) (h : succ (succ m) = succ (succ n)) :
+  n + k = m + k :=
+begin
+  injections with h' h'',
+  rw h''
+end
+
+example (m n k : ℕ) (h : succ (succ m) = succ (succ n)) :
+  n + k = m + k :=
+by injections; simp *
+
+example (m n : ℕ) (h : succ m = 0) : n = n + 7 :=
+by injections
+
+example (m n : ℕ) (h : succ m = 0) : n = n + 7 :=
+by contradiction
+
+example (h : 7 = 4) : false :=
+by injections
 end Section7_6
