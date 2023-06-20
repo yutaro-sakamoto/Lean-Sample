@@ -855,3 +855,31 @@ by contradiction
 example (h : 7 = 4) : false :=
 by injections
 end Section7_6
+
+namespace Section7_7
+  universes u v
+  open nat
+  inductive vector (α : Type u) : nat → Type u
+  | nil {} : vector zero
+  | cons {n : ℕ} (a : α) (v: vector n) : vector (succ n)
+
+  inductive eq {α : Sort u} (a : α) : α → Prop
+  | refl [] : eq a
+
+
+  @[elab_as_eliminator]
+  theorem subst {α : Type u} {a b : α} {p : α → Prop}
+    (h₁ : eq a b) (h₂ : p a) : p b :=
+  eq.rec h₂ h₁
+
+  theorem symm {α : Type u} {a b : α} (h : eq a b) : eq b a :=
+    subst h (eq.refl a)
+
+  theorem trans {α : Type u} {a b c : α}
+    (h₁ : eq a b) (h₂ : eq b c) : eq a c :=
+  sorry
+
+  theorem congr {α β : Type u} {a b : α} (f : α → β)
+    (h : eq a b) : eq (f a) (f b) :=
+  sorry
+end Section7_7
